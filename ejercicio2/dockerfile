@@ -1,0 +1,8 @@
+FROM mongo:latest
+RUN mongod
+
+FROM node:latest
+WORKDIR /backend
+COPY . .
+RUN npm install --quiet
+CMD ["node", "/backend/index.js"]

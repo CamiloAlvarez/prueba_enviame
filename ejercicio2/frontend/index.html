@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Prueba enviame</title>
+    
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Empresa de prueba</h2>
+            <h3>Lista de trabajadores</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <a href="create.html"><div class='btn btn-success'>Nuevo</div></a>
+            <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Cargo</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="tabla">
+            </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $.ajax({
+            url: "http://localhost:8080/prueba/trabajador",
+            method: "GET",
+            async: false,
+            success: function(result){
+                console.log(result);
+                for(var i=0;i<result.length;i++){
+                    $("#tabla").append(
+                        "<tr>"+
+                    "<td>"+result[i].name+"</td>"+
+                    "<td>"+result[i].lastname+"</td>"+
+                    "<td>"+result[i].position+"</td>"+
+                    "<td>"+
+                    "<a href='view.html?id="+result[i]._id+"'><div class='btn btn-success'>Ver</div></a>"+
+                    "<div onclick='borrar(\""+result[i]._id+"\")' class='btn btn-danger'>Borrar</div>"+
+                    "<a href='update.html?id="+result[i]._id+"'><div class='btn btn-success'>Editar</div></a>"+
+                    "</td></tr>")
+                }
+            }
+        });
+    });
+
+    var borrar = function(id){
+        console.log(id);
+        $.ajax({
+            url: "http://localhost:8080/prueba/trabajador/delete/"+id,
+            method: "GET",
+            async: false,
+            success: function(result){
+                console.log(result);
+                window.location = "index.html";
+            },
+            error: function(result){
+                console.log(result);
+            }
+        });
+    };
+</script>
+</html>

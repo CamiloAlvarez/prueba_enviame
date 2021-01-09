@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Prueba enviame</title>
+    
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Editar trabajador</h2>
+            <div>Nombre: <input type="text" id="name"></div>
+            <div>Apellido: <input type="text" id="lastname"></div>
+            <div>Cargo: <input type="text" id="position"></div>
+            <div id="guardar" class='btn btn-success'>Guardar</div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    $(document).ready(function() {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        var id = urlParams.get('id');
+        console.log(id);
+        $.ajax({
+            url: "http://localhost:8080/prueba/trabajador/"+id,
+            method: "GET",
+            async: false,
+            success: function(result){
+                console.log(result);
+                $("#name").val(result[0].name);
+                $("#lastname").val(result[0].lastname);
+                $("#position").val(result[0].position);
+            }
+        });
+    });
+
+    $("#guardar").on("click",function(){
+        var data = {};
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        var id = urlParams.get('id');
+        data.id = id;
+        data.name = $("#name").val();
+        data.lastname = $("#lastname").val();
+        data.position = $("#position").val();
+        console.log(data);
+        $.ajax({
+            url: "http://localhost:8080/prueba/trabajador/update",
+            method: "POST",
+            async: false,
+            data: data,
+            success: function(result){
+                console.log(result);
+            },
+            error: function(result){
+                console.log(result);
+            }
+        });
+    });
+</script>
+</html>
