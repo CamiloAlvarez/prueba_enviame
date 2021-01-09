@@ -11,6 +11,9 @@
         <div class="col-md-12">
             <h2 id="name"></h2>
             <span>Cargo: </span><p id="cargo"></p>
+            <span>Direccion: </span><p id="dir"></p>
+            <span>Telefono: </span><p id="tel"></p>
+            <span>Email: </span><p id="email"></p>
         </div>
     </div>
 </body>
@@ -29,6 +32,9 @@
                 console.log(result);
                 $("#name").append(result[0].name+" "+result[0].lastname);
                 $("#cargo").append(result[0].position);
+                $("#dir").append(result[0].direccion);
+                $("#email").append(result[0].email);
+                $("#tel").append(result[0].telefono);
             }
         });
     });

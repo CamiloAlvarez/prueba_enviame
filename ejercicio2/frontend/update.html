@@ -13,6 +13,9 @@
             <div>Nombre: <input type="text" id="name"></div>
             <div>Apellido: <input type="text" id="lastname"></div>
             <div>Cargo: <input type="text" id="position"></div>
+            <div>Direccion: <input type="text" id="dir"></div>
+            <div>Email: <input type="text" id="email"></div>
+            <div>Telefono: <input type="text" id="tel"></div>
             <div id="guardar" class='btn btn-success'>Guardar</div>
         </div>
     </div>
@@ -32,6 +35,9 @@
                 $("#name").val(result[0].name);
                 $("#lastname").val(result[0].lastname);
                 $("#position").val(result[0].position);
+                $("#dir").val(result[0].direccion);
+                $("#email").val(result[0].email);
+                $("#tel").val(result[0].telefono);
             }
         });
     });
@@ -45,6 +51,9 @@
         data.name = $("#name").val();
         data.lastname = $("#lastname").val();
         data.position = $("#position").val();
+        data.email = $("#email").val();
+        data.dir = $("#dir").val();
+        data.tel = $("#tel").val();
         console.log(data);
         $.ajax({
             url: "http://localhost:8080/prueba/trabajador/update",

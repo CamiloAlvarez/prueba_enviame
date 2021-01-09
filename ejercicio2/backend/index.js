@@ -8,6 +8,7 @@ var router = express.Router();
 const MongoClient = require('mongodb').MongoClient
 const mongo = require('mongodb');
 const request = require('request');
+var faker = require('faker');
 
 var dbstring = "mongodb://localhost:27017/prueba";
 var dbname = "prueba";
@@ -56,6 +57,9 @@ router.post('/trabajador/create', function (req, res) {
   	var nombre = req.body.name;
   	var apellido = req.body.lastname;
   	var cargo = req.body.position;
+  	var email = req.body.email;
+  	var dir = req.body.dir;
+  	var tel = req.body.tel;
   	console.log(nombre);
   	console.log(apellido);
   	console.log(cargo);
@@ -63,11 +67,42 @@ router.post('/trabajador/create', function (req, res) {
 	  	if (err) return console.error(err);
 	  	console.log('Connected to Database create');
 		const db = client.db('prueba');
-		db.collection('trabajador').insert({"name":nombre,"lastname":apellido,"position":cargo}, function (err, result) {
+		db.collection('trabajador').insert({"name":nombre,"lastname":apellido,"position":cargo,"email":email,"direccion":dir,"telefono":tel}, function (err, result) {
 			if(err != null) console.log(err);
 			console.log(result);
 		});
 	});
+  	res.send("Create OK");
+});
+
+router.post('/trabajador/createMany', function (req, res) {
+	res.header("Access-Control-Allow-Origin", "*");
+  	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  	var cant = parseInt(req.body.cant);
+  	/*var nombre = req.body.name;
+  	var apellido = req.body.lastname;
+  	var cargo = req.body.position;*/
+  	for(var i=0;i<cant;i++){
+	  	let nombre = faker.name.firstName();
+	  	let apellido = faker.name.lastName();
+	  	let cargo = faker.name.jobTitle();
+		let email = faker.internet.email();
+	  	let dir = faker.address.streetName();
+	  	let tel = faker.phone.phoneNumber();
+
+	  	console.log(nombre);
+	  	console.log(apellido);
+	  	console.log(cargo);
+	  	MongoClient.connect('mongodb://localhost:27017/prueba', (err, client) => {
+		  	if (err) return console.error(err);
+		  	console.log('Connected to Database create');
+			const db = client.db('prueba');
+			db.collection('trabajador').insert({"name":nombre,"lastname":apellido,"position":cargo,"email":email,"direccion":dir,"telefono":tel}, function (err, result) {
+				if(err != null) console.log(err);
+				console.log(result);
+			});
+		});
+  	}
   	res.send("Create OK");
 });
 
@@ -78,13 +113,16 @@ router.post('/trabajador/update/', function (req, res) {
   	var nombre = req.body.name;
   	var apellido = req.body.lastname;
   	var cargo = req.body.position;
+  	var email = req.body.email;
+  	var dir = req.body.dir;
+  	var tel = req.body.tel;
 
   	MongoClient.connect('mongodb://localhost:27017/prueba', (err, client) => {
 	  	if (err) return console.error(err);
 	  	console.log('Connected to Database');
 		const db = client.db('prueba');
 		var oid = new mongo.ObjectID(id);
-		db.collection('trabajador').update({'_id':oid}, {$set: {"name":nombre,"lastname":apellido,"position":cargo}}, {w:1}, function(err, result){
+		db.collection('trabajador').update({'_id':oid}, {$set: {"name":nombre,"lastname":apellido,"position":cargo,"email":email,"direccion":dir,"telefono":tel}}, {w:1}, function(err, result){
     		console.log(result);
 		});
 	});
